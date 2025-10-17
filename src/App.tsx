@@ -1,8 +1,11 @@
+import { AuthProvider } from './context';
+import { AppRouter } from './routes/AppRouter';
+
 function App() {
   return (
-    <>
-      <h1>Registro de licencias App</h1>
-    </>
+    <AuthProvider>
+      <AppRouter />
+    </AuthProvider>
   );
 }
 
