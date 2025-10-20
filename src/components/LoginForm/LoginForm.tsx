@@ -31,7 +31,7 @@ export const LoginForm = ({ onSubmit, isSubmitting }: LoginFormProps) => {
         display: 'flex',
         flexDirection: 'column',
         gap: 2,
-        width: '100%',
+        width: 300,
         maxWidth: 400,
         mx: 'auto',
       }}
@@ -47,6 +47,7 @@ export const LoginForm = ({ onSubmit, isSubmitting }: LoginFormProps) => {
         {...register('email')}
         error={!!errors.email}
         helperText={errors.email?.message}
+        size="small"
       />
       <TextField
         label="Contraseña"
@@ -54,6 +55,7 @@ export const LoginForm = ({ onSubmit, isSubmitting }: LoginFormProps) => {
         {...register('password')}
         error={!!errors.password}
         helperText={errors.password?.message}
+        size="small"
       />
       <Button
         type="submit"

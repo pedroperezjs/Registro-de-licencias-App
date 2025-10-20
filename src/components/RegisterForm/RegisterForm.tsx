@@ -31,7 +31,7 @@ export const RegisterForm = ({ onSubmit, isSubmitting }: RegisterFormProps) => {
         display: 'flex',
         flexDirection: 'column',
         gap: 2,
-        width: '100%',
+        width: 300,
         maxWidth: 400,
         mx: 'auto',
       }}
@@ -48,6 +48,7 @@ export const RegisterForm = ({ onSubmit, isSubmitting }: RegisterFormProps) => {
         {...register('name')}
         error={!!errors.name}
         helperText={errors.name?.message}
+        size="small"
       />
 
       <TextField
@@ -55,6 +56,7 @@ export const RegisterForm = ({ onSubmit, isSubmitting }: RegisterFormProps) => {
         {...register('email')}
         error={!!errors.email}
         helperText={errors.email?.message}
+        size="small"
       />
 
       <TextField
@@ -63,6 +65,7 @@ export const RegisterForm = ({ onSubmit, isSubmitting }: RegisterFormProps) => {
         {...register('password')}
         error={!!errors.password}
         helperText={errors.password?.message}
+        size="small"
       />
 
       <TextField
@@ -71,6 +74,7 @@ export const RegisterForm = ({ onSubmit, isSubmitting }: RegisterFormProps) => {
         {...register('confirmPassword')}
         error={!!errors.confirmPassword}
         helperText={errors.confirmPassword?.message}
+        size="small"
       />
 
       <Button
