@@ -1,9 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context';
 import { Box, Button, Typography } from '@mui/material';
+import { LoadingScreen } from '../../components';
 
 export const DashboardPage = () => {
-  const { user, logout } = useAuth();
+  const { user, logout, loading } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -14,6 +15,8 @@ export const DashboardPage = () => {
       console.error(err);
     }
   };
+
+  if (loading) return <LoadingScreen />;
 
   return (
     <Box sx={{ p: 4 }}>

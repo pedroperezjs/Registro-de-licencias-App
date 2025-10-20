@@ -51,12 +51,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const login = async (email: string, password: string) => {
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-    if (error) throw new Error(error.message);
-    setUser(data.user);
+    setLoading(true);
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+      if (error) throw new Error(error.message);
+      setUser(data.user);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const register = async (data: {
@@ -64,20 +69,30 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     email: string;
     password: string;
   }) => {
-    const { name, email, password } = data;
-    const { data: signUpData, error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: { data: { name } }, // Guarda el nombre en metadata
-    });
-    if (error) throw new Error(error.message);
-    setUser(signUpData.user);
+    setLoading(true);
+    try {
+      const { name, email, password } = data;
+      const { data: signUpData, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: { data: { name } },
+      });
+      if (error) throw new Error(error.message);
+      setUser(signUpData.user);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const logout = async () => {
-    const { error } = await supabase.auth.signOut();
-    if (error) throw new Error(error.message);
-    setUser(null);
+    setLoading(true);
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) throw new Error(error.message);
+      setUser(null);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

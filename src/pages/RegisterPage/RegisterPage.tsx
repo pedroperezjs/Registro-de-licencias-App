@@ -1,5 +1,5 @@
 import { Box, Paper } from '@mui/material';
-import { RegisterForm } from '../../components';
+import { LoadingScreen, RegisterForm } from '../../components';
 import type { RegisterFormData } from '../../shemas/authShema';
 import { useAuth } from '../../context';
 import { useNavigate } from 'react-router-dom';
@@ -14,7 +14,7 @@ export const RegisterPage = () => {
     navigate('/');
   };
 
-  if (loading) return <div>Cargando...</div>;
+  if (loading) return <LoadingScreen />;
 
   return (
     <Box

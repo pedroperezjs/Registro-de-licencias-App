@@ -1,5 +1,5 @@
 import { Box, Paper } from '@mui/material';
-import { LoginForm } from '../../components';
+import { LoadingScreen, LoginForm } from '../../components';
 import type { LoginFormData } from '../../shemas/authShema';
 import { useAuth } from '../../context';
 import { useNavigate } from 'react-router-dom';
@@ -16,7 +16,7 @@ export const LoginPage = () => {
     }
   };
 
-  if (loading) return <div>Cargando...</div>;
+  if (loading) return <LoadingScreen />;
 
   return (
     <Box
