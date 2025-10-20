@@ -10,8 +10,12 @@ export const RegisterPage = () => {
 
   const handleRegister = async (data: RegisterFormData) => {
     const { name, email, password } = data;
-    await register({ name, email, password });
-    navigate('/');
+    try {
+      await register({ name, email, password });
+      navigate('/');
+    } catch (err: any) {
+      console.error(err.message);
+    }
   };
 
   if (loading) return <LoadingScreen />;
