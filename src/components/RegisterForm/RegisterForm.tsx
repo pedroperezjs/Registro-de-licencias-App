@@ -11,14 +11,13 @@ import {
 
 interface RegisterFormProps {
   onSubmit: (data: RegisterFormData) => Promise<void> | void;
-  isSubmitting?: boolean;
 }
 
-export const RegisterForm = ({ onSubmit, isSubmitting }: RegisterFormProps) => {
+export const RegisterForm = ({ onSubmit }: RegisterFormProps) => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<RegisterFormData>({
     resolver: zodResolver(registerShema),
   });

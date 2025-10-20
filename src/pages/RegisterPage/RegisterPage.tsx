@@ -1,17 +1,20 @@
 import { Box, Paper } from '@mui/material';
 import { RegisterForm } from '../../components';
 import type { RegisterFormData } from '../../shemas/authShema';
+import { useAuth } from '../../context';
+import { useNavigate } from 'react-router-dom';
 
 export const RegisterPage = () => {
+  const { register, loading } = useAuth();
+  const navigate = useNavigate();
+
   const handleRegister = async (data: RegisterFormData) => {
-    console.log('Register data:', data);
-    // 🔐 Aquí conectarás con Supabase o tu backend
-    // Ejemplo (cuando integremos Supabase):
-    // const { data: user, error } = await supabase.auth.signUp({
-    //   email: data.email,
-    //   password: data.password,
-    // });
+    const { name, email, password } = data;
+    await register({ name, email, password });
+    navigate('/');
   };
+
+  if (loading) return <div>Cargando...</div>;
 
   return (
     <Box
