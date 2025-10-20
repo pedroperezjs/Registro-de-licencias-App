@@ -7,14 +7,18 @@ import {
 } from 'react';
 import { supabase } from '../../services/supabaseClient';
 import type { User } from '@supabase/supabase-js';
-import { email } from 'zod';
 
 interface AuthContextType {
   user: User | null;
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
-  register: (name: string, email: string, password: string) => Promise<void>;
+  register: (data: {
+    name: string;
+    email: string;
+    password: string;
+  }) => Promise<void>;
   isAuthenticated: boolean;
+  loading: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -27,13 +31,19 @@ export const useAuth = () => {
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => setUser(data.user));
+    // Verify initial session
+    supabase.auth.getUser().then(({ data }) => {
+      setUser(data.user);
+      setLoading(false);
+    });
 
     const { data: subscription } = supabase.auth.onAuthStateChange(
       (_event, session) => {
         setUser(session?.user ?? null);
+        setLoading(false);
       }
     );
 
@@ -45,29 +55,41 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       email,
       password,
     });
-    if (error) throw error;
+    if (error) throw new Error(error.message);
     setUser(data.user);
   };
 
-  const register = async (email: string, password: string, name: string) => {
-    const { data, error } = await supabase.auth.signUp({
+  const register = async (data: {
+    name: string;
+    email: string;
+    password: string;
+  }) => {
+    const { name, email, password } = data;
+    const { data: signUpData, error } = await supabase.auth.signUp({
       email,
       password,
-      options: {
-        data: { name },
-      },
+      options: { data: { name } }, // Guarda el nombre en metadata
     });
-    if (error) throw error;
-    setUser(data.user);
+    if (error) throw new Error(error.message);
+    setUser(signUpData.user);
   };
 
   const logout = async () => {
-    await supabase.auth.signOut();
+    const { error } = await supabase.auth.signOut();
+    if (error) throw new Error(error.message);
     setUser(null);
   };
+
   return (
     <AuthContext.Provider
-      value={{ user, login, logout, register, isAuthenticated: !!user }}
+      value={{
+        user,
+        login,
+        logout,
+        register,
+        isAuthenticated: !!user,
+        loading,
+      }}
     >
       {children}
     </AuthContext.Provider>
