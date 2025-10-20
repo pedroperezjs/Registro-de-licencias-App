@@ -111,7 +111,7 @@ export const DashboardLayout = () => {
               onClick={handleLogout}
               sx={{ fontSize: 15 }}
             >
-              Cerrar Sesión
+              Cerrar sesión
             </Button>
           </Box>
         </Toolbar>
