@@ -1,13 +1,91 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="/vite.svg"
+    />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
     <title>registro-licencias-app</title>
+
+    <style>
+      #preloader {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        width: 100vw;
+        background-color: #f5f5f5;
+        font-family: 'Roboto', sans-serif;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 9999;
+        transition: opacity 0.5s ease-out;
+      }
+
+      .spinner {
+        border: 6px solid #e0e0e0;
+        border-top: 6px solid #1976d2;
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+        animation: spin 1s linear infinite;
+        margin-bottom: 1rem;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      .loading-text {
+        color: #1976d2;
+        font-size: 1.2rem;
+        font-weight: 500;
+      }
+    </style>
   </head>
   <body>
+    <div id="preloader">
+      <div class="spinner"></div>
+      <div class="loading-text">Cargando aplicación...</div>
+    </div>
+
     <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+    <script
+      type="module"
+      src="/src/main.tsx"
+    ></script>
+
+    <script>
+      const preloader = document.getElementById('preloader');
+      const root = document.getElementById('root');
+
+      if (preloader && root) {
+        // Observa cuando React monte contenido
+        const observer = new MutationObserver(() => {
+          if (root.childElementCount > 0) {
+            preloader.style.opacity = '0'; // fade out
+            setTimeout(() => {
+              preloader.style.display = 'none';
+            }, 500); // coincide con la transición
+            observer.disconnect();
+          }
+        });
+
+        observer.observe(root, { childList: true });
+      }
+    </script>
   </body>
 </html>
