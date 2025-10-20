@@ -7,6 +7,7 @@ import {
   LoginPage,
   RegisterPage,
 } from '../pages';
+import { DashboardLayout } from '../components';
 
 export const AppRouter = () => {
   const { isAuthenticated } = useAuth();
@@ -34,7 +35,7 @@ export const AppRouter = () => {
             />
           </>
         ) : (
-          <>
+          <Route element={<DashboardLayout />}>
             <Route
               path="/"
               element={<DashboardPage />}
@@ -51,7 +52,7 @@ export const AppRouter = () => {
               path="/*"
               element={<Navigate to="/" />}
             />
-          </>
+          </Route>
         )}
       </Routes>
     </BrowserRouter>
