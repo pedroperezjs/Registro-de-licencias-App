@@ -7,11 +7,13 @@ import {
 } from 'react';
 import { supabase } from '../../services/supabaseClient';
 import type { User } from '@supabase/supabase-js';
+import { email } from 'zod';
 
 interface AuthContextType {
   user: User | null;
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
+  register: (name: string, email: string, password: string) => Promise<void>;
   isAuthenticated: boolean;
 }
 
@@ -47,13 +49,25 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setUser(data.user);
   };
 
+  const register = async (email: string, password: string, name: string) => {
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: { name },
+      },
+    });
+    if (error) throw error;
+    setUser(data.user);
+  };
+
   const logout = async () => {
     await supabase.auth.signOut();
     setUser(null);
   };
   return (
     <AuthContext.Provider
-      value={{ user, login, logout, isAuthenticated: !!user }}
+      value={{ user, login, logout, register, isAuthenticated: !!user }}
     >
       {children}
     </AuthContext.Provider>

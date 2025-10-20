@@ -44,7 +44,7 @@ export const RegisterForm = ({ onSubmit, isSubmitting }: RegisterFormProps) => {
       </Typography>
 
       <TextField
-        label="Nombre completo"
+        label="Nombre"
         {...register('name')}
         error={!!errors.name}
         helperText={errors.name?.message}
