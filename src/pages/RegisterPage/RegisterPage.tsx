@@ -1,17 +1,18 @@
 import { Box, Paper } from '@mui/material';
-import { LoginForm } from '../../components';
-import type { LoginFormData } from '../../shemas/authShema';
+import { RegisterForm } from '../../components';
+import type { RegisterFormData } from '../../shemas/authShema';
 
-export const LoginPage = () => {
-  const handleLogin = async (data: LoginFormData) => {
-    console.log('Login data:', data);
+export const RegisterPage = () => {
+  const handleRegister = async (data: RegisterFormData) => {
+    console.log('Register data:', data);
     // 🔐 Aquí conectarás con Supabase o tu backend
-    // Ejemplo (una vez integremos Supabase):
-    // const { data: user, error } = await supabase.auth.signInWithPassword({
+    // Ejemplo (cuando integremos Supabase):
+    // const { data: user, error } = await supabase.auth.signUp({
     //   email: data.email,
     //   password: data.password,
     // });
   };
+
   return (
     <Box
       sx={{
@@ -26,7 +27,7 @@ export const LoginPage = () => {
         elevation={3}
         sx={{ p: 4, borderRadius: 3 }}
       >
-        <LoginForm onSubmit={handleLogin} />
+        <RegisterForm onSubmit={handleRegister} />
       </Paper>
     </Box>
   );
