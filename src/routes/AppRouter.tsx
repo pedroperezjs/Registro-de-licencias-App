@@ -5,6 +5,7 @@ import {
   DashboardPage,
   LicensesPage,
   LoginPage,
+  RegisterPage,
 } from '../pages';
 
 export const AppRouter = () => {
@@ -13,10 +14,25 @@ export const AppRouter = () => {
     <BrowserRouter>
       <Routes>
         {!isAuthenticated ? (
-          <Route
-            path="*"
-            element={<LoginPage />}
-          />
+          <>
+            <Route
+              path="login"
+              element={<LoginPage />}
+            />
+            <Route
+              path="/register"
+              element={<RegisterPage />}
+            />
+            <Route
+              path="*"
+              element={
+                <Navigate
+                  to="/login"
+                  replace
+                />
+              }
+            />
+          </>
         ) : (
           <>
             <Route
