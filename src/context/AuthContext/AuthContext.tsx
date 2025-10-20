@@ -34,16 +34,25 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Verify initial session
-    supabase.auth.getUser().then(({ data }) => {
-      setUser(data.user);
-      setLoading(false);
-    });
+    const fetchSession = async () => {
+      try {
+        // Obtener sesión inicial (user + tokens)
+        const { data } = await supabase.auth.getSession();
+        setUser(data.session?.user ?? null);
+      } catch (err) {
+        console.error('Error fetching session:', err);
+        setUser(null);
+      } finally {
+        setLoading(false);
+      }
+    };
 
+    fetchSession();
+
+    // Escuchar cambios de sesión (login, logout, expiración)
     const { data: subscription } = supabase.auth.onAuthStateChange(
       (_event, session) => {
         setUser(session?.user ?? null);
-        setLoading(false);
       }
     );
 
