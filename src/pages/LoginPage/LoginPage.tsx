@@ -1,17 +1,23 @@
 import { Box, Paper } from '@mui/material';
 import { LoginForm } from '../../components';
 import type { LoginFormData } from '../../shemas/authShema';
+import { useAuth } from '../../context';
+import { useNavigate } from 'react-router-dom';
 
 export const LoginPage = () => {
+  const { login, loading } = useAuth();
+  const navigate = useNavigate();
   const handleLogin = async (data: LoginFormData) => {
-    console.log('Login data:', data);
-    // 🔐 Aquí conectarás con Supabase o tu backend
-    // Ejemplo (una vez integremos Supabase):
-    // const { data: user, error } = await supabase.auth.signInWithPassword({
-    //   email: data.email,
-    //   password: data.password,
-    // });
+    try {
+      await login(data.email, data.password);
+      navigate('/');
+    } catch (err) {
+      console.error(err);
+    }
   };
+
+  if (loading) return <div>Cargando...</div>;
+
   return (
     <Box
       sx={{

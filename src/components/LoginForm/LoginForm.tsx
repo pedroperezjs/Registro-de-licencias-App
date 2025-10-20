@@ -14,11 +14,11 @@ interface LoginFormProps {
   isSubmitting?: boolean;
 }
 
-export const LoginForm = ({ onSubmit, isSubmitting }: LoginFormProps) => {
+export const LoginForm = ({ onSubmit }: LoginFormProps) => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginShema),
   });
