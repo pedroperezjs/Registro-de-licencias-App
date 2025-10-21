@@ -9,19 +9,14 @@ import {
   Box,
   Button,
   CircularProgress,
-  IconButton,
-  List,
-  ListItem,
   Paper,
   TextField,
   Typography,
   Snackbar,
   Alert,
-  ListItemText,
 } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
 import { useCallback, useState } from 'react';
-import { ConfirmDialog } from '../../components';
+import { CompaniesTable, ConfirmDialog } from '../../components';
 
 export const CompaniesPage = () => {
   const [confirmOpen, setConfirmOpen] = useState(false);
@@ -84,7 +79,7 @@ export const CompaniesPage = () => {
         Registrar Empresa
       </Typography>
 
-      <Paper sx={{ p: 3, mb: 4 }}>
+      <Paper sx={{ p: 3, mb: 4, width: 500 }}>
         <form
           onSubmit={handleSubmit(onSubmit)}
           noValidate
@@ -132,27 +127,11 @@ export const CompaniesPage = () => {
           No hay empresas registradas todavía.
         </Typography>
       ) : (
-        <List>
-          {companies.map((company) => (
-            <ListItem
-              key={company.id}
-              secondaryAction={
-                <IconButton
-                  edge="end"
-                  aria-label="Eliminar empresa"
-                  onClick={() => askDelete(company.id)}
-                  disabled={deleting || loading}
-                >
-                  <DeleteIcon />
-                </IconButton>
-              }
-            >
-              <ListItemText
-                primary={`${company.nameCompany} — ${company.rutCompany}`}
-              />
-            </ListItem>
-          ))}
-        </List>
+        <CompaniesTable
+          rows={companies}
+          loading={loading}
+          onDelete={(id) => askDelete(id)}
+        />
       )}
 
       {/* Snackbar global del contexto */}
