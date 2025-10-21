@@ -13,6 +13,7 @@ import {
   Typography,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { formatCLDateTime } from '../../utils/date';
 
 export interface CompanyRow {
   id: string;
@@ -45,6 +46,9 @@ export const CompaniesTable = ({
             </TableCell>
             <TableCell>
               <strong>RUT</strong>
+            </TableCell>
+            <TableCell>
+              <strong>Fecha/Creación</strong>
             </TableCell>
             <TableCell align="right">
               <strong>Acciones</strong>
@@ -79,6 +83,9 @@ export const CompaniesTable = ({
               >
                 <TableCell>{row.nameCompany}</TableCell>
                 <TableCell>{row.rutCompany}</TableCell>
+                <TableCell>
+                  {row.created_at ? formatCLDateTime(row.created_at) : '—'}
+                </TableCell>
                 <TableCell align="right">
                   <Tooltip title="Eliminar">
                     <span>
