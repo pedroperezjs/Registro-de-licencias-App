@@ -1,5 +1,5 @@
 import { CssBaseline, ThemeProvider } from '@mui/material';
-import { AuthProvider } from './context';
+import { AuthProvider, CompaniesProvider } from './context';
 import { AppRouter } from './routes/AppRouter';
 import { theme } from './theme/theme';
 
@@ -8,7 +8,9 @@ function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <AuthProvider>
-        <AppRouter />
+        <CompaniesProvider>
+          <AppRouter />
+        </CompaniesProvider>
       </AuthProvider>
     </ThemeProvider>
   );
