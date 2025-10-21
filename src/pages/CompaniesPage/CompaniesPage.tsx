@@ -19,9 +19,14 @@ import {
   Alert,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
+import { ConfirmDialog } from '../../components';
 
 export const CompaniesPage = () => {
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [targetId, setTargetId] = useState<string | null>(null);
+  const [deleting, setDeleting] = useState(false);
+
   const {
     companies,
     addCompany,
@@ -48,10 +53,25 @@ export const CompaniesPage = () => {
   const onSubmit = async (data: CompanyFormData) => {
     const cleaned = { ...data, rutCompany: normalizeRut(data.rutCompany) };
 
+    await addCompany(cleaned);
+    reset();
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!targetId) return;
+    setDeleting(true);
     try {
-      await addCompany(cleaned);
-      reset();
-    } catch {}
+      await deleteCompany(targetId);
+    } finally {
+      setDeleting(false);
+      setConfirmOpen(false);
+      setTargetId(null);
+    }
+  };
+
+  const askDelete = (id: string) => {
+    setTargetId(id);
+    setConfirmOpen(true);
   };
 
   return (
@@ -68,7 +88,6 @@ export const CompaniesPage = () => {
           <TextField
             label="Nombre de la empresa"
             fullWidth
-            autoFocus
             {...register('nameCompany')}
             error={!!errors.nameCompany}
             helperText={errors.nameCompany?.message}
@@ -121,7 +140,8 @@ export const CompaniesPage = () => {
                 <IconButton
                   edge="end"
                   aria-label="Eliminar empresa"
-                  onClick={() => deleteCompany(company.id)}
+                  onClick={() => askDelete(company.id)}
+                  disabled={deleting || loading}
                 >
                   <DeleteIcon />
                 </IconButton>
@@ -150,6 +170,17 @@ export const CompaniesPage = () => {
           {snackbar.message}
         </Alert>
       </Snackbar>
+
+      <ConfirmDialog
+        open={confirmOpen}
+        title="Eliminar empresa"
+        message="¿Seguro que deseas eliminar esta empresa? Esta acción no se puede deshacer."
+        confirmText="Eliminar"
+        cancelText="Cancelar"
+        onClose={() => setConfirmOpen(false)}
+        onConfirm={handleConfirmDelete}
+        loading={deleting}
+      />
     </Box>
   );
 };
