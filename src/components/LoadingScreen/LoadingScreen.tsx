@@ -17,9 +17,7 @@ export const LoadingScreen = () => {
       <Typography
         variant="h6"
         sx={{ mt: 2 }}
-      >
-        Cargando...
-      </Typography>
+      ></Typography>
     </Box>
   );
 };

@@ -17,6 +17,7 @@ import {
   Typography,
   Snackbar,
   Alert,
+  ListItemText,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useCallback, useState } from 'react';
@@ -41,9 +42,9 @@ export const CompaniesPage = () => {
     handleSubmit,
     reset,
     formState: { errors, isSubmitting },
-    setValue,
   } = useForm<CompanyFormData>({
     resolver: zodResolver(companySchema),
+    defaultValues: { nameCompany: '', rutCompany: '' },
   });
 
   const normalizeRut = useCallback((rut: string) => {
@@ -84,7 +85,10 @@ export const CompaniesPage = () => {
       </Typography>
 
       <Paper sx={{ p: 3, mb: 4 }}>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          noValidate
+        >
           <TextField
             label="Nombre de la empresa"
             fullWidth
@@ -93,17 +97,13 @@ export const CompaniesPage = () => {
             helperText={errors.nameCompany?.message}
             sx={{ mb: 2 }}
             required
+            autoFocus={!confirmOpen}
           />
 
           <TextField
             label="RUT de la empresa"
             fullWidth
-            {...register('rutCompany', {
-              onBlur: (e) => {
-                const val = normalizeRut(e.target.value);
-                setValue('rutCompany', val, { shouldValidate: true });
-              },
-            })}
+            {...register('rutCompany')}
             error={!!errors.rutCompany}
             helperText={errors.rutCompany?.message}
             sx={{ mb: 2 }}
@@ -147,9 +147,9 @@ export const CompaniesPage = () => {
                 </IconButton>
               }
             >
-              <Typography>
-                {company.nameCompany} — {company.rutCompany}
-              </Typography>
+              <ListItemText
+                primary={`${company.nameCompany} — ${company.rutCompany}`}
+              />
             </ListItem>
           ))}
         </List>

@@ -50,6 +50,7 @@ export const ConfirmDialog = ({
           color="error"
           variant="contained"
           disabled={loading}
+          autoFocus
         >
           {loading ? 'Eliminando…' : confirmText}
         </Button>
